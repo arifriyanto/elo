@@ -27,7 +27,7 @@ function elo_custom_header_setup() {
 		'default-image'          => get_template_directory_uri() . '/images/cover.jpg',
 		'default-text-color'     => '000000',
 		'width'                  => 1000,
-		'height'                 => 250,
+		'height'                 => 500,
 		'flex-height'            => true,
 		'wp-head-callback'       => 'elo_header_style',
 		'admin-head-callback'    => 'elo_admin_header_style',

@@ -140,13 +140,12 @@ if ( ! function_exists( 'elo_cover_page' ) ) :
  */
 function elo_cover_page() {
 
-		if ( get_theme_mod('elo_cover') ) : 
-	?>
-	<div id="page-cover" style="background: url( <?php echo get_theme_mod('elo_cover');?>) no-repeat center center; background-size: cover;">
+	if ( get_header_image() ) : ?>
+	<div id="page-cover" style="background: url( <?php echo header_image();?>) no-repeat center center; background-size: cover;">
 		<header id="header">
 			<div class="wrap">
 				<h1><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></h1>	
-				<h2><?php bloginfo( 'description' ); ?><!--Seriously.--></h2>
+				<h2><?php bloginfo( 'description' ); ?></h2>
 			</div>
 		</header>
 	</div>
@@ -155,7 +154,7 @@ function elo_cover_page() {
 		<header id="header">
 			<div class="wrap">
 				<h1><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a></h1>	
-				<h2><?php bloginfo( 'description' ); ?><!--Seriously.--></h2>
+				<h2><?php bloginfo( 'description' ); ?></h2>
 			</div>
 		</header>
 	</div>

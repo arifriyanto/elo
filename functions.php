@@ -69,11 +69,16 @@ function elo_setup() {
 		'aside', 'image', 'video', 'quote', 'link',
 	) );
 
+	// Adding editor style
+	add_editor_style( array(
+		'custom-editor-style.css'
+	) );
+
 	//Setup the WordPress core custom background feature.
-	add_theme_support( 'custom-background', apply_filters( 'elo_custom_background_args', array(
-		'default-color' => 'ffffff',
-		'default-image' => '',
-	) ) );
+	// add_theme_support( 'custom-background', apply_filters( 'elo_custom_background_args', array(
+	// 	'default-color' => 'ffffff',
+	// 	'default-image' => '',
+	// ) ) );
 
 	
 }
@@ -87,7 +92,7 @@ add_action( 'after_setup_theme', 'elo_setup' );
  */
 function elo_widgets_init() {
 	register_sidebar( array(
-		'name'          => __( 'Sidebar', 'elo' ),
+		'name'          => __( 'Footer Widget', 'elo' ),
 		'id'            => 'sidebar-1',
 		'description'   => '',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
@@ -98,11 +103,116 @@ function elo_widgets_init() {
 }
 add_action( 'widgets_init', 'elo_widgets_init' );
 
+
+if ( ! function_exists( 'elo_fonts_url' ) ) :
+/**
+ * Register Google fonts for Elo.
+ *
+ * @since Elo 1.0
+ *
+ * @return string Google fonts URL for the theme.
+ */
+function elo_fonts_url() {
+	$fonts_url = '';
+	$fonts     = array();
+	$subsets   = 'latin,latin-ext';
+
+	/* translators: If there are characters in your language that are not supported by Noticia Text, translate this to 'off'. Do not translate into your own language. */
+	if ( 'off' !== _x( 'on', 'Noticia Text font: on or off', 'elo' ) ) {
+		$fonts[] = 'Noticia Text:400,400italic,700';
+	}
+
+	/* translators: If there are characters in your language that are not supported by Open Sans, translate this to 'off'. Do not translate into your own language. */
+	if ( 'off' !== _x( 'on', 'Open Sans font: on or off', 'elo' ) ) {
+		$fonts[] = 'Open Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800';
+	}
+
+	/* translators: If there are characters in your language that are not supported by Lora, translate this to 'off'. Do not translate into your own language. */
+	if ( 'off' !== _x( 'on', 'Lora font: on or off', 'elo' ) ) {
+		$fonts[] = 'Lora:400,700,400italic,700italic';
+	}
+
+	/* translators: To add an additional character subset specific to your language, translate this to 'greek', 'cyrillic', 'devanagari' or 'vietnamese'. Do not translate into your own language. */
+	$subset = _x( 'no-subset', 'Add new subset (greek, cyrillic, devanagari, vietnamese)', 'elo' );
+
+	if ( 'cyrillic' == $subset ) {
+		$subsets .= ',cyrillic,cyrillic-ext';
+	} elseif ( 'greek' == $subset ) {
+		$subsets .= ',greek,greek-ext';
+	} elseif ( 'devanagari' == $subset ) {
+		$subsets .= ',devanagari';
+	} elseif ( 'vietnamese' == $subset ) {
+		$subsets .= ',vietnamese';
+	}
+
+	if ( $fonts ) {
+		$fonts_url = add_query_arg( array(
+			'family' => urlencode( implode( '|', $fonts ) ),
+			'subset' => urlencode( $subsets ),
+		), '//fonts.googleapis.com/css' );
+	}
+
+	return $fonts_url;
+}
+endif;
+
+
+if ( ! function_exists( 'elo_categories_link' ) ) :
+/**
+ * Register Google fonts for Elo.
+ *
+ * @since Elo 1.0
+ *
+ * @return string Google fonts URL for the theme.
+ */	
+function elo_categories_link() {
+	$categories_list = get_the_category_list( _x( ' ', ' ', 'elo' ) );
+	if ( $categories_list ) {
+		printf( '<div class="category-list">%2$s</div>',
+			_x( '', '', 'elo' ),
+			$categories_list
+		);
+	}
+}
+endif;
+
+
+if ( ! function_exists( 'elo_posted_by' ) ) :
+/**
+ * Register Google fonts for Elo.
+ *
+ * @since Elo 1.0
+ *
+ * @return string Google fonts URL for the theme.
+ */	
+function elo_posted_by() {
+	echo '<div class="entry-meta">';
+	echo 'By:';
+	echo '<span>';
+	echo get_the_author_meta('nickname'); 
+	echo '</span>';
+	echo '</div>'; 
+}
+endif;
+
+
+
 /**
  * Enqueue scripts and styles.
  */
 function elo_scripts() {
+	// Add custom fonts, used in the main stylesheet.
+	wp_enqueue_style( 'elo-fonts', elo_fonts_url(), array(), null );
+
 	wp_enqueue_style( 'elo-style', get_stylesheet_uri() );
+
+	wp_enqueue_script( 'elo-main', get_template_directory_uri() . '/js/main.js', array(), '20150505', true );
+
+	wp_enqueue_script( 'elo-modernizr', get_template_directory_uri() . '/js/modernizr.js', array(), '20150505', true );
+
+	wp_enqueue_script( 'elo-classie', get_template_directory_uri() . '/js/classie.js', array(), '20150505', true );
+
+	wp_enqueue_script( 'elo-menu', get_template_directory_uri() . '/js/menu.js', array( 'jquery' ), '20150505', true );
 
 	wp_enqueue_script( 'elo-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
@@ -117,7 +227,7 @@ add_action( 'wp_enqueue_scripts', 'elo_scripts' );
 /**
  * Implement the Custom Header feature.
  */
-//require get_template_directory() . '/inc/custom-header.php';
+require get_template_directory() . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
@@ -141,24 +251,13 @@ require get_template_directory() . '/inc/jetpack.php';
 
 
 // word limiter
-// word limiter
-function word_count($string, $limit) {
-	$word = explode(' ', $string);
-	return implode(' ',array_slice($word, 0, $limit));
-}
-
- function custom_excerpt_length( $length ) {
+function elo_custom_excerpt_length( $length ) {
     return 10;
 }
-add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+add_filter( 'excerpt_length', 'elo_custom_excerpt_length', 999 );
     
-function new_excerpt_more( $more ) {
+function elo_new_excerpt_more( $more ) {
     return '...';
 }
-add_filter('excerpt_more', 'new_excerpt_more');
+add_filter('excerpt_more', 'elo_new_excerpt_more');
 
-
-function elo_add_editor_styles() {
-    add_editor_style( 'custom-editor-style.css' );
-}
-add_action( 'admin_init', 'elo_add_editor_styles' );

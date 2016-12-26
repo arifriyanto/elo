@@ -22,7 +22,7 @@ get_header(); ?>
 
 					<div id="content" class="wrap">
 						<div class="content-title">
-							<h2>table of contents</h2>
+							<h2><?php _e( 'table of contents', 'elo' ); ?></h2>
 						</div>
 						<div id="content-list">
 							<ul>
@@ -43,9 +43,6 @@ get_header(); ?>
 
 						</div>
 
-						<!-- <div class="browse-all">
-							<a href="#">Browse All Contents</a>
-						</div> -->
 						<?php elo_paging_nav(); ?>
 					</div>
 				</div>

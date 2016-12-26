@@ -24,7 +24,7 @@
 			?>
 		</div>
 		<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-		<?php echo word_count(the_excerpt(), '30');?>
+		<?php the_excerpt(); ?>
 		<p class="meta"><span><?php the_time(get_option('date_format')); ?></span></p>
 	</li>
 </article><!-- #post-## -->

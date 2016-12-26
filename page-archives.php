@@ -15,7 +15,7 @@ get_header(); ?>
 			<div id="content" class="wrap">
 
 				<div class="page-title">
-					<h2>table of content</h2>
+					<h2><?php _e( 'table of contents', 'elo' ); ?></h2>
 				</div>
 
 				<div id="content-list">
@@ -31,21 +31,11 @@ get_header(); ?>
 						<!-- the loop -->
 						<?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
 							<li>
-								<div class="category-list">
-									<?php
-										$categories = get_the_category();
-										$separator = ' ';
-										$output = '';
-										if($categories){
-											foreach($categories as $category) {
-												$output .= '<a class="category-list" href="'.get_category_link( $category->term_id ).'" title="' . esc_attr( sprintf( __( "View all posts in %s", 'elo' ), $category->name ) ) . '">'.$category->cat_name.'</a>'.$separator;
-											}
-										echo trim($output, $separator);
-										}
-									?>
-								</div>
+								
+								<?php echo elo_categories_link(); ?>
+								
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-								<?php echo word_count(the_excerpt(), '30');?>
+								<?php the_excerpt(); ?>
 								<p class="meta"><span><?php the_time(get_option('date_format')); ?></span></p>
 							</li>
 						<?php endwhile; ?>

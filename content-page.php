@@ -12,9 +12,9 @@
 			<?php the_title(); ?>
 		</h1>
 	</div>
-	<div class="entry-meta">
-		By: <span> <?php echo get_the_author_meta('nickname'); ?> </span>, <?php elo_posted_on(); ?>
-	</div>
+	
+	<?php echo elo_posted_by(); ?>
+	
 	<div class="entry-content">									
 
 		<?php the_content(); ?>	

@@ -7,11 +7,20 @@
  * @package Elo
  */
 ?>
+			<!-- widget begin -->
+			<?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+			<div class="widget-wrapper">
+				<div class="widget-inner clearfix">
+					<?php dynamic_sidebar( 'sidebar-1' ); ?>
+				</div>
+			</div>
+			<?php endif; ?>
+			<!-- widget end -->
 
 			<!-- footer begin-->
 			<footer id="footer">
 				<div class="wrap">
-					<p>Crafted from Borobudur with a cup of <span class="red">&hearts;</span> by Arif Riyanto</p>
+					<p><?php printf( __( 'Powered by %s &amp; %s', 'elo' ), '<a href="http://wordpress.org/">WordPress</a>', '<a href="http://arifriyanto.com/portfolio/elo/">Elo Theme</a>' ); ?></p>
 				</div>
 			</footer>
 			<!-- footer end-->
@@ -25,12 +34,6 @@
 			<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
 		</nav>
 	</div>
-
-
-	<script src="<?php echo get_template_directory_uri(); ?>/js/jquery.js"></script>
-	<script src="<?php echo get_template_directory_uri(); ?>/js/modernizr.js"></script>
-	<script src="<?php echo get_template_directory_uri(); ?>/js/classie.js"></script>
-	<script src="<?php echo get_template_directory_uri(); ?>/js/menu.js"></script>
 
 	<?php wp_footer(); ?>
 
